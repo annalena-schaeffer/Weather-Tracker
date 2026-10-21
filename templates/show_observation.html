@@ -1,0 +1,40 @@
+<!-- show_observation.html – shows details for one specific observation -->
+
+{% extends "base.html" %}  <!-- Uses layout from base.html header -->
+
+{% block content %}  <!-- Start of this page content -->
+
+<!-- Box that wraps all content on this page and adds space at the top -->
+<div class="container mt-5">
+
+    <!-- Page title -->
+    <h3>Observation Details</h3>
+
+    <!-- Flask runs the show_observation route in routes.py which fetches the observation from the database -->
+    <!-- Then sends the data to show_observation.html as a list where each number matches a column []-->
+
+    <p><strong>ID:</strong> {{ observation[0] }}</p> 
+    <p><strong>City:</strong> {{ observation[1] }}</p> 
+    <p><strong>Country:</strong> {{ observation[2] }}</p>
+    <p><strong>Latitude:</strong> {{ observation[3] }}</p>
+    <p><strong>Longitude:</strong> {{ observation[4] }}</p>
+    <p><strong>Temperature:</strong> {{ observation[5] }}°C</p>
+    <p><strong>Wind:</strong> {{ observation[7] }} km/h</p>
+    <p><strong>Time:</strong> {{ observation[8] }}</p>
+    <p><strong>Notes:</strong> {{ observation[9] or "" }}</p>
+
+    <!-- Note box + Save button -->
+    <!-- Sends the note to the edit_observation route in routes.py which saves it to the database  -->
+    <form action="/observations/{{ observation[0] }}/edit" method="POST">
+
+        <input type="text" name="notes" placeholder="Add note">
+        <button type="submit">Save</button>
+
+    </form>
+
+    <!-- Back button to go to all observations -->
+    <a href="/observations">Observations</a>
+
+</div>
+
+{% endblock %}  <!-- End of page content -->

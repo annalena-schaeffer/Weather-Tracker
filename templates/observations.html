@@ -1,0 +1,76 @@
+<!-- observations.html – shows all observations stored in the database -->
+
+{% extends "base.html" %}   <!-- Uses layout from base.html header -->
+
+{% block content %} <!-- Start of this page content -->
+
+<!-- div box that wraps all the content on this page and adds space at the top -->
+<div class="container mt-5">
+
+    <h3>All Observations</h3>
+
+    <!-- Search box – type an ID number and press Search -->
+    <!-- Flask receives the ID and runs the show_observation route in routes.py -->
+    <!-- I gets the correct observation from the database and shows it on show_observation.html -->
+    <form onsubmit="this.action='/observations/' + this.elements['id'].value">
+        <input type="number" name="id" placeholder="Enter ID">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Table – shows all observations from the database -->
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>Temperature</th>
+                <th>Wind</th>
+                <th>Time</th>
+                <th>Notes</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+
+        <tbody>
+             <!-- Jinja2 Loop goes through every observation in the database and show it as a table row -->
+            {% for row in data %}
+            <tr>
+                <!-- ID Number -->
+                 <td>{{ row[0] }}</td>
+                <!-- City Name -->
+                 <td>{{ row[1] }}</td>
+                <!-- Country -->
+                 <td>{{ row[2] }}</td>
+                <!-- Latitud -->
+                 <td>{{ row[3] }}</td>
+                <!-- Longitude -->
+                 <td>{{ row[4] }}</td>   
+                <!-- Temperature -->
+                 <td>{{ row[5] }}°C</td>
+                <!-- Wind Speed -->
+                 <td>{{ row[7] }}km/h</td>
+                <!-- Time of observation -->
+                 <td>{{ row[8] }}</td>
+                <!-- Notes optional -->
+                 <td>{{ row[9] or "" }}</td>
+                <!-- Action Button -->
+                 <td>
+                    <!-- Delete button – sends a POST request to the delete_observation route in routes.py -->
+                    <form action="/observations/{{ row[0] }}/delete" method="POST" style="display:inline;">
+                        <button type="submit"> Delete</button>
+                    </form>
+                 </td>
+
+            </tr> 
+            {% endfor %}     <!-- Stop looping when all rows are done -->
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}  <!-- End of page content -->
